@@ -57,7 +57,6 @@ The technical parts, specifically, can probably be skipped if you don't think yo
 
 ## Technical and Science Stuff
 
-## Understanding Transformers and Attention
 ### Karpathy's "Building GPT From Scratch"
 
 If you are going to find the time for just one resource, this is by far the best and most
@@ -67,7 +66,8 @@ intuitive resources. As always with *Andrej Karpathy* - he is the master of expl
 - [Let's build GPT: from scratch, in code, spelled out](https://www.youtube.com/watch?v=kCc8FmEb1nY)
 - [Let's reproduce GPT-2 (124M)](https://www.youtube.com/watch?v=l8pRSuU81PU)
 
-### Other Good Resources
+### Understanding Transformers and Attention
+
 - [The Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/)
 - [Really deep dive into transformer inference arithmetic](https://kipp.ly/transformer-inference-arithmetic/#kv-cache)
 - [Getting Meaning From Text: Self-Attention Step-by-Step](https://pub.towardsai.net/getting-meaning-from-text-self-attention-step-by-step-video-7d8f49694f89)
@@ -76,7 +76,7 @@ intuitive resources. As always with *Andrej Karpathy* - he is the master of expl
 - [HG's Test Time Compute](https://huggingface.co/spaces/HuggingFaceH4/blogpost-scaling-test-time-compute)
 
 
-### Courses
+### NLP/LLM Academic Courses
 If you want to dedicate yourself to a full course in the field - here are some good options.
 - [Stanford's current main NLP course](https://stanford-cs336.github.io/spring2025/)
 - [Great list by Yoav Goldberg](https://gist.github.com/yoavg/95bbc5768cacd2bf07187779fada4867)
