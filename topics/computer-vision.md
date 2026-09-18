@@ -30,6 +30,8 @@ The **recognition** one is AlexNet through ViT and CLIP, then VLMs, then video. 
 
 # The Generative Thread
 
+If you'd rather read one thing that covers the whole arc before starting on any of it, [Diffusion Models - bit by bit](https://www.himanshustwts.com/posts/diffusion) goes generative modelling - GANs - VAEs as setup for diffusion, in one narrative. Conceptual and mathematical, no code.
+
 ## VAEs and Variational Inference
 
 The autoencoder part is obvious. The *variational* part is where people lose it - and it's worth not losing, because the ELBO shows up again in diffusion, and the encoder/decoder pair shows up again as the thing Stable Diffusion actually runs inside.
@@ -64,7 +66,7 @@ Nobody trains GANs anymore. Read this anyway - adversarial training is where the
 
 - [Lilian Weng's "What are Diffusion Models?"](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/) - still the best first read on DDPMs, score based models and NCSN
 - [SORA From Scratch: Diffusion Transformers for Video Generation Models](https://leetarxiv.substack.com/p/the-annotated-diffusion-transformer) - code first walkthrough of DiT, the architecture behind Sora
-- [Perspectives on diffusion](https://sander.ai/2023/07/20/perspectives.html) - Dieleman showing diffusion models are autoencoders, latent variable models, score predictors, reverse SDE solvers, flow models, RNNs and autoregressive models, all at once. Probably the single most useful thing here for making separate papers stop looking like separate fields
+- [Perspectives on diffusion](https://sander.ai/2023/07/20/perspectives.html) - Dieleman showing diffusion models are autoencoders, latent variable models, score predictors, reverse SDE solvers, flow models, RNNs and autoregressive models, all at once. Very good for making separate papers stop looking like separate fields
 - [The Principles of Diffusion Models](https://arxiv.org/abs/2510.21890) - a full monograph tracing diffusion models from VAE/score/flow perspectives through flow map models, with a [companion site](https://the-principles-of-diffusion-models.github.io). Now at v3, which adds a discrete diffusion chapter and per-chapter reader guides ahead of MIT Press publication
 - [ConceptAttention: Diffusion Transformers Learn Highly Interpretable Features](https://arxiv.org/abs/2502.04320) - DiTs align text and image representations as a byproduct of conditional denoising, so a dot product between the two gives you sharp saliency maps for free. Beats CLIP at segmentation, with no training at all ([project page](https://alechelbling.com/ConceptAttention/))
 - [awesome-diffusion-models](https://github.com/hyungkwonko/awesome-diffusion-models) - curated papers and open source code if you want to go past the intros above
