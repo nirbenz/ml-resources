@@ -46,6 +46,8 @@ Two questions everyone hits partway through the derivation:
 - [Why do we start from KL(q(z)||p(z|x)) in the ELBO derivation?](https://stats.stackexchange.com/questions/531503/why-do-we-start-from-kldqz-pzx-in-elbo-derivation)
 - [Why does maximizing the lower bound maximize the probability?](https://stats.stackexchange.com/questions/315841/why-maximizing-the-lower-bound-of-variational-evidence-maximizes-the-probability)
 
+And if the KL term itself is the part that isn't landing, [Understanding KL Divergence in Diffusion Generative Models and Beyond](https://www.himanshustwts.com/posts/dgm-kl-divergence) builds it up properly rather than assuming it.
+
 ## GANs
 
 Nobody trains GANs anymore. Read this anyway - adversarial training is where the field learned what genuinely unstable optimization feels like, mode collapse is still the canonical failure mode for any generative objective, and VQGAN is the direct ancestor of basically every image tokenizer in use today.
@@ -137,6 +139,7 @@ I like the third generation most, for two reasons; the model sees multiple views
 - [Flamingo: a Visual Language Model for Few-Shot Learning](https://arxiv.org/abs/2204.14198) - generation one, and where interleaved image-text prompting comes from. Most of what followed is arguably a simplification of it
 - [BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models](https://arxiv.org/abs/2301.12597) - the Q-Former. A learned bottleneck that squeezes patch tokens down to a small fixed set before the LLM sees them, and the main alternative to LLaVA's linear projection
 - [Qwen2-VL: Enhancing Vision-Language Model's Perception of the World at Any Resolution](https://arxiv.org/abs/2409.12191) - naive dynamic resolution and M-RoPE, which is where the "any-res" handling in the current generation comes from. Read it before the Qwen3-VL report
+- [SigLIP Paper - hola sigmoid!](https://www.himanshustwts.com/posts/siglip) - walks contrastive pre-training, why the sigmoid loss matters and what the architecture actually does. Easier entry than the paper if SigLIP is the bit you care about
 - [SigLIP 2: Multilingual Vision-Language Encoders with Improved Semantic Understanding, Localization, and Dense Features](https://arxiv.org/abs/2502.14786) - drop-in successor to SigLIP, adds captioning-based pretraining, self-distillation and masked prediction for stronger zero-shot and dense-prediction performance
 - [Visual Instruction Tuning](https://arxiv.org/abs/2304.08485) - LLaVA, the original recipe for bolting a CLIP ViT onto an LLM via a small projector and instruction-tuning on GPT-4 generated multimodal data
 - [PaliGemma 2: A Family of Versatile VLMs for Transfer](https://arxiv.org/abs/2412.03555) - pairs a SigLIP encoder with Gemma 2 across multiple sizes and resolutions, the same single-projection recipe as LLaVA but from Google

@@ -17,6 +17,7 @@
   - [Agents](#agents)
   - [Fine-Tuning and PEFT](#fine-tuning-and-peft)
   - [RL / Post-training in Practice](#rl--post-training-in-practice)
+  - [Evals](#evals)
   - [Tooling](#tooling)
   - [MCP/Cursor](#mcpcursor)
     - [Claude Code](#claude-code)
@@ -25,6 +26,9 @@
   - [Understanding Transformers and Attention](#understanding-transformers-and-attention)
   - [Normalization](#normalization)
   - [Before Decoders: The Encoder Era](#before-decoders-the-encoder-era)
+  - [Scaling Laws](#scaling-laws)
+  - [Instruct Tuning and RLHF](#instruct-tuning-and-rlhf)
+  - [Mixture of Experts](#mixture-of-experts)
   - [Reasoning](#reasoning)
     - [On AGI Timelines](#on-agi-timelines)
   - [NLP/LLM Academic Courses](#nlpllm-academic-courses)
@@ -64,7 +68,8 @@ The document is split three ways; [Applied LLM Engineering](#applied-llm-enginee
    11. What are agents?
    12. API models when how etc. Common frameworks
    13. When should I use self-hosted models and/or fine-tune?
-   14. MCP/Cursor/Both
+   14. How do I know if any of this actually works?
+   15. MCP/Cursor/Both
 
 2. LLM Science
    1. How language models work
@@ -74,6 +79,8 @@ The document is split three ways; [Applied LLM Engineering](#applied-llm-enginee
    5. Why is training large models is so difficult/expensive?
    6. What is instruct tuning and Reinforcement Learning with Human Feedback (RLHF)?
    7. What are reasoning models actually doing? What is test-time compute?
+   8. How does tokenization work?
+   9. What is a Mixture of Experts?
 
 3. Computer Vision
    1. What are diffusion models and how do they work? What replaced them?
@@ -107,6 +114,7 @@ The practical part - using models, not understanding them. If you only read one 
 - [Pinecone on HNSW specifically](https://www.pinecone.io/learn/series/faiss/hnsw/)
 - [Okapi BM25](https://en.wikipedia.org/wiki/Okapi_BM25)
 - [Pinecone's take on rerankers](https://www.pinecone.io/learn/series/rag/rerankers/)
+- [MTEB leaderboard](https://huggingface.co/spaces/mteb/leaderboard) - everything above tells you what to do with embeddings, nothing tells you which model to embed *with*. This does. Check the task type matches yours before believing a number
 
 ### Memory (Not RAG)
 
@@ -133,9 +141,18 @@ The practical part - using models, not understanding them. If you only read one 
 
 - [Improving Cursor Tab with online RL](https://cursor.com/blog/tab-rl) - good case study showing plain policy gradient (not GRPO) is enough when you have a lot of on-policy data and solid infra
 
+## Evals
+
+The part everyone skips, and then wonders why nothing improves. If you're building anything real this matters more than your prompt.
+
+- [Your AI Product Needs Evals](https://hamel.dev/blog/posts/evals/) - the one to read first. Why generic benchmarks won't tell you anything about your product, and how to build the loop that will
+- [AI Evals: Everything You Need to Know](https://hamel.dev/blog/posts/evals-faq/) - the FAQ version, good for the questions you hit once you've actually started
+- [Using LLM-as-a-Judge For Evaluation](https://hamel.dev/blog/posts/llm-judge/) - how to do it without fooling yourself, which is most of the difficulty
+
 ## Tooling
 
 - [Hugging Face pipelines](https://huggingface.co/docs/transformers/main_classes/pipelines) - still the fastest way to get from nothing to a running model. Start here before reaching for anything heavier
+- [vLLM](https://docs.vllm.ai/en/latest/) - what you actually serve self-hosted models with. Paged attention, continuous batching and quantization, and the docs double as a decent explanation of why naive serving is slow
 
 ## MCP/Cursor
 
@@ -164,6 +181,7 @@ intuitive resources. As always with *Andrej Karpathy* - he is the master of expl
 - [Karpathy's minimal GPT repo](https://github.com/karpathy/minGPT)
 - [Let's build GPT: from scratch, in code, spelled out](https://www.youtube.com/watch?v=kCc8FmEb1nY)
 - [Let's reproduce GPT-2 (124M)](https://www.youtube.com/watch?v=l8pRSuU81PU)
+- [Let's build the GPT Tokenizer](https://www.youtube.com/watch?v=zduSFxRajkE) - tokenization is where a surprising number of weird model behaviours actually come from. Same series, same quality
 
 ## Understanding Transformers and Attention
 
@@ -173,6 +191,8 @@ intuitive resources. As always with *Andrej Karpathy* - he is the master of expl
 - [Really deep dive into transformer inference arithmetic](https://kipp.ly/transformer-inference-arithmetic/#kv-cache)
 - [GPT in 60 Lines of NumPy](https://jaykmody.com/blog/gpt-from-scratch/)
 - [Becoming the Unbeatable: How I Fine-Tuned GPT's KV Cache](https://dipkumar.dev/becoming-the-unbeatable/posts/gpt-kvcache/)
+- [RoFormer: Enhanced Transformer with Rotary Position Embedding](https://arxiv.org/abs/2104.09864) - RoPE, which is what basically everything uses now. Read this before [Context](#context) above, since that's the thing being extended
+- [FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness](https://arxiv.org/abs/2205.14135) - attention was never compute bound, it was memory bound. Same maths, much better use of the hardware
 
 ## Normalization
 
@@ -187,6 +207,24 @@ BERT and friends aren't what anyone means by "LLM" today, but a lot of practical
 
 - [How to get meaning from text with language model BERT](https://www.youtube.com/watch?v=-9vVhYEXeyQ) - solid explanation of turning text into representations, from back when generation wasn't the point
 - [Leaving BERT Behind With DeBERTa](https://wandb.ai/akshayuppal12/DeBERTa/reports/The-Next-Generation-of-Transformers-Leaving-BERT-Behind-With-DeBERTa--VmlldzoyNDM2NTk2) - disentangled attention, explained readably. Also a good look at what incremental architecture work actually looked like
+
+## Scaling Laws
+
+- [Scaling Laws for Neural Language Models](https://arxiv.org/abs/2001.08361) - Kaplan et al., the original. Loss is a power law in compute, data and parameters, and the curves are remarkably clean
+- [Training Compute-Optimal Large Language Models](https://arxiv.org/abs/2203.15556) - Chinchilla, which corrected the above and showed almost everyone was training badly undertrained models on far too little data. This is the one that changed how people actually build
+
+## Instruct Tuning and RLHF
+
+How a model that just predicts the next token turns into something that follows instructions. See also [RL / Post-training in Practice](#rl--post-training-in-practice) for the applied side.
+
+- [Training language models to follow instructions with human feedback](https://arxiv.org/abs/2203.02155) - InstructGPT. The paper that made the whole thing work, and the reason ChatGPT felt different from GPT-3
+- [Direct Preference Optimization: Your Language Model is Secretly a Reward Model](https://arxiv.org/abs/2305.18290) - DPO. Skips the separate reward model and the RL loop entirely, and mostly just works. Much of the field moved here
+- [RLHF Book](https://rlhfbook.com/) - Nathan Lambert's full length treatment, and the best single place to go past the two papers above
+
+## Mixture of Experts
+
+- [Switch Transformers](https://arxiv.org/abs/2101.03961) - the clearest explanation of the idea; route each token to one expert, get far more parameters for the same compute per token
+- [Mixtral of Experts](https://arxiv.org/abs/2401.04088) - the open model that made everyone take MoE seriously, and a much more practical read than the above
 
 ## Reasoning
 
