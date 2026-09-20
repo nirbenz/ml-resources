@@ -186,6 +186,7 @@ intuitive resources. As always with *Andrej Karpathy* - he is the master of expl
 
 - [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) - the classic visual walkthrough, still the best starting point
 - [The Illustrated GPT-2](https://jalammar.github.io/illustrated-gpt2/) - same treatment, applied to decoder-only models
+- [Lucas Beyer's Transformers talk](https://lb.eyer.be/transformer) - the deck one of the ViT and SigLIP authors uses to teach this. Attention from scratch, the full architecture, KV cache sizing, compute budget heuristics, MoE, then the ViT takeover and everything-is-tokens. Denser than the Illustrated posts and worth the density
 - [The Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/)
 - [Getting Meaning From Text: Self-Attention Step-by-Step](https://pub.towardsai.net/getting-meaning-from-text-self-attention-step-by-step-video-7d8f49694f89)
 - [Really deep dive into transformer inference arithmetic](https://kipp.ly/transformer-inference-arithmetic/#kv-cache)

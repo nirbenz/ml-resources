@@ -110,6 +110,8 @@ A tight, unusually readable research thread from 2022-2023, all answering one qu
 
 # The Recognition Thread
 
+For a single talk covering where this whole thread ended up, [Vision in the Age of LLMs](https://www.youtube.com/watch?v=0XB7fNS_ONg) is Lucas Beyer at ETH Zurich in 2026. He co-authored ViT, SigLIP and PaliGemma, so most of the encoders below are his.
+
 ## Choosing a Visual Encoder
 
 Not every vision backbone is doing the same job, and picking the wrong one is a very common quiet mistake. Roughly;
