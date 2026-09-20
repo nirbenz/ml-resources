@@ -269,7 +269,7 @@ Some of these are lists of lists - use them to go deeper than what's in this doc
 
 Vision got big enough that it lives in its own file - **[topics/computer-vision.md](topics/computer-vision.md)**.
 
-Two threads in there. The generative one goes VAEs - GANs - diffusion - rectified flow - text-to-image personalization, roughly in the order the field figured them out. The recognition one goes AlexNet - ViT/CLIP - VLMs - video.
+Three threads in there. The generative one goes VAEs - GANs - diffusion - rectified flow - text-to-image personalization, roughly in the order the field figured them out. The recognition one is encoders - VLMs - video. The third is 3D and novel view synthesis, which is small and mostly its own world. The historical material (AlexNet through SAM) sits at the bottom in its own section.
 
 If you'd rather have three links than a whole file:
 

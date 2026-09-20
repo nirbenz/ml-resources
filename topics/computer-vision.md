@@ -2,11 +2,15 @@
 
 Part of [An Always*-Updating List of LLM/Language/Vision Resources](../README.md).
 
-Two threads in here, mostly independent.
+Three threads in here, mostly independent, plus a history section at the end.
 
 The **generative** one is what people usually want; VAEs, GANs, diffusion, rectified flow, then the 2023 rush to personalize text-to-image models cheaply. Roughly in the order the field figured things out, because diffusion doesn't really make sense until you've seen a VAE, the VQ part of modern image tokenizers comes straight out of the GAN era, and flow matching is much easier to get once you already understand diffusion.
 
-The **recognition** one is AlexNet through ViT and CLIP, then VLMs, then video. If you were doing computer vision before 2020 you can skip most of it.
+The **recognition** one is about encoders and what you do with them; picking a visual backbone, then VLMs, then video.
+
+The **3D** one is small - novel view synthesis, which is its own world and barely touches the other two.
+
+Everything historical sits in [History, For the Curious](#history-for-the-curious) at the bottom. Read it if you want to know how the field got here, skip it if you just want what works now.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -19,14 +23,14 @@ The **recognition** one is AlexNet through ViT and CLIP, then VLMs, then video. 
   - [Rectified Flow and Flow Matching](#rectified-flow-and-flow-matching)
   - [Text-to-Image Personalization](#text-to-image-personalization)
 - [The Recognition Thread](#the-recognition-thread)
-  - [Pre-Diffusion Classics](#pre-diffusion-classics)
-    - [Backbones](#backbones)
-    - [Detection and Segmentation](#detection-and-segmentation)
-    - [Representation Learning](#representation-learning)
-    - [Vision and Language](#vision-and-language)
   - [Choosing a Visual Encoder](#choosing-a-visual-encoder)
   - [Vision-Language Models (VLMs)](#vision-language-models-vlms)
   - [Video Understanding Models](#video-understanding-models)
+- [3D and Novel View Synthesis](#3d-and-novel-view-synthesis)
+- [History, For the Curious](#history-for-the-curious)
+  - [Backbones](#backbones)
+  - [Detection and Segmentation](#detection-and-segmentation)
+  - [Representation Learning](#representation-learning)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -71,6 +75,7 @@ Nobody trains GANs anymore. Read this anyway - adversarial training is where the
 ## Diffusion Models
 
 - [Lilian Weng's "What are Diffusion Models?"](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/) - still the best first read on DDPMs, score based models and NCSN
+- [High-Resolution Image Synthesis with Latent Diffusion Models](https://arxiv.org/abs/2112.10752) - LDM, the Stable Diffusion paper. Run diffusion in a VAE's latent space instead of pixel space and the compute drops by orders of magnitude. This is the single architectural decision that put image generation on consumer GPUs
 - [SORA From Scratch: Diffusion Transformers for Video Generation Models](https://leetarxiv.substack.com/p/the-annotated-diffusion-transformer) - code first walkthrough of DiT, the architecture behind Sora
 - [Perspectives on diffusion](https://sander.ai/2023/07/20/perspectives.html) - Dieleman showing diffusion models are autoencoders, latent variable models, score predictors, reverse SDE solvers, flow models, RNNs and autoregressive models, all at once. Very good for making separate papers stop looking like separate fields
 - [The Principles of Diffusion Models](https://arxiv.org/abs/2510.21890) - a full monograph tracing diffusion models from VAE/score/flow perspectives through flow map models, with a [companion site](https://the-principles-of-diffusion-models.github.io). Now at v3, which adds a discrete diffusion chapter and per-chapter reader guides ahead of MIT Press publication
@@ -105,38 +110,6 @@ A tight, unusually readable research thread from 2022-2023, all answering one qu
 
 # The Recognition Thread
 
-## Pre-Diffusion Classics
-
-Grouped by what each line of work was actually trying to do, rather than strictly by date. Chronological within each group.
-
-### Backbones
-
-- [ImageNet Classification with Deep Convolutional Neural Networks](https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf) - AlexNet, the 2012 paper that kicked off the deep learning era in computer vision, also on Ilya's reading list
-- [Very Deep Convolutional Networks for Large-Scale Image Recognition](https://arxiv.org/abs/1409.1556) - VGG. Mostly remembered for showing depth with tiny 3x3 filters was the whole trick, and then for being the feature extractor everyone used for years afterwards - perceptual loss, style transfer, all of it
-- [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385) - ResNet, the skip connection paper, arguably still the most reused idea in all of deep learning
-- [An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale](https://arxiv.org/abs/2010.11929) - ViT, transformers finally come for CV
-
-### Detection and Segmentation
-
-- [Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks](https://arxiv.org/abs/1506.01497) - the object detection classic
-- [You Only Look Once: Unified, Real-Time Object Detection](https://arxiv.org/abs/1506.02640) - YOLO. Detection as one regression pass instead of region proposals; the other branch from Faster R-CNN, and the one that won on speed
-- [U-Net: Convolutional Networks for Biomedical Image Segmentation](https://arxiv.org/abs/1505.04597) - written for biomedical segmentation, then spent years as the backbone of every diffusion model. Skip connections again
-- [Mask R-CNN](https://arxiv.org/abs/1703.06870) - Faster R-CNN plus a mask head. The paper that made instance segmentation routine
-- [Segment Anything](https://arxiv.org/abs/2304.02643) - SAM. Promptable segmentation trained on a billion masks, and segmentation's foundation model moment
-
-### Representation Learning
-
-Learning an embedding space where distance means something, rather than learning a classifier.
-
-- [A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/abs/2002.05709) - SimCLR. Augment an image two ways, pull the pair together, push everything else apart. The augmentations turned out to matter more than the architecture did
-- [Emerging Properties in Self-Supervised Vision Transformers](https://arxiv.org/abs/2104.14294) - the original DINO. Self-distillation with no labels, and the result nobody was expecting; the attention maps segment objects on their own. See [Choosing a Visual Encoder](#choosing-a-visual-encoder) for where this ended up
-- [ArcFace: Additive Angular Margin Loss for Deep Face Recognition](https://arxiv.org/abs/1801.07698) - supervised, but the point is the geometry of the embedding rather than the classification. Still the default starting point for a lot of retrieval work, not only faces
-
-### Vision and Language
-
-- [Learning Transferable Visual Models From Natural Language Supervision](https://arxiv.org/abs/2103.00020) - CLIP, contrastive image/text pretraining
-- [Sigmoid Loss for Language Image Pre-Training](https://arxiv.org/abs/2303.15343) - SigLIP, CLIP's successor, swaps the softmax contrastive loss for a sigmoid one
-
 ## Choosing a Visual Encoder
 
 Not every vision backbone is doing the same job, and picking the wrong one is a very common quiet mistake. Roughly;
@@ -147,6 +120,8 @@ Not every vision backbone is doing the same job, and picking the wrong one is a 
 
 "Is this the same scene" and "is this the same shot, re-encoded" are different questions, and they want different encoders.
 
+- [Learning Transferable Visual Models From Natural Language Supervision](https://arxiv.org/abs/2103.00020) - CLIP, contrastive image/text pretraining
+- [Sigmoid Loss for Language Image Pre-Training](https://arxiv.org/abs/2303.15343) - SigLIP, CLIP's successor, swaps the softmax contrastive loss for a sigmoid one
 - [DINOv2: Learning Robust Visual Features without Supervision](https://arxiv.org/abs/2304.07193) - self-supervised features that transfer without fine-tuning. The default when you want a general purpose extractor rather than a semantic one
 - [DINOv3](https://arxiv.org/abs/2508.10104) - the current generation, scaled up
 - [A Self-Supervised Descriptor for Image Copy Detection](https://arxiv.org/abs/2202.10261) - SSCD, the geometric end of the spectrum. Worth knowing it exists so you stop reaching for a semantic encoder when what you actually wanted was a fingerprint
@@ -190,3 +165,45 @@ Below is the level 4 lineage, plus the transfer recipe most level 2 systems actu
 - [Is Space-Time Attention All You Need for Video Understanding?](https://arxiv.org/abs/2102.05095) - TimeSformer, a convolution-free video classifier using divided space-time self-attention, an early "true 3D" video encoder
 - [VideoMAE: Masked Autoencoders are Data-Efficient Learners for Self-Supervised Video Pre-Training](https://arxiv.org/abs/2203.12602) - adapts masked autoencoding to video with extreme tube masking, works well even on small datasets
 - [InternVideo: General Video Foundation Models via Generative and Discriminative Learning](https://arxiv.org/abs/2212.03191) - combines masked video modeling with video-language contrastive learning; superseded by [InternVideo2](https://arxiv.org/abs/2403.15377)
+
+---
+
+# 3D and Novel View Synthesis
+
+Small thread, and mostly disconnected from the other two; the goal is reconstructing and rendering a scene rather than recognizing or generating images. Included because it is a large part of modern computer vision that nothing else in this file touches.
+
+- [NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis](https://arxiv.org/abs/2003.08934) - encode a whole scene in the weights of a small MLP and render it by marching rays through that field. Beautiful, and painfully slow
+- [3D Gaussian Splatting for Real-Time Radiance Field Rendering](https://arxiv.org/abs/2308.04079) - the same problem solved with explicit primitives and a rasterizer instead of an implicit field. Real-time rendering, much faster training, and it largely displaced NeRF in practice
+
+---
+
+# History, For the Curious
+
+How the field got here. None of this is required to use anything above, but the lineage explains a lot of the design decisions that otherwise look arbitrary.
+
+Grouped by what each line of work was actually trying to do, rather than strictly by date. Chronological within each group.
+
+## Backbones
+
+- [ImageNet Classification with Deep Convolutional Neural Networks](https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf) - AlexNet, the 2012 paper that kicked off the deep learning era in computer vision, also on Ilya's reading list
+- [Very Deep Convolutional Networks for Large-Scale Image Recognition](https://arxiv.org/abs/1409.1556) - VGG. Mostly remembered for showing depth with tiny 3x3 filters was the whole trick, and then for being the feature extractor everyone used for years afterwards - perceptual loss, style transfer, all of it
+- [Going Deeper with Convolutions](https://arxiv.org/abs/1409.4842) - GoogLeNet/Inception. Parallel filter sizes in one block and aggressive 1x1 bottlenecks, which is where "just make it wider, not only deeper" starts
+- [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385) - ResNet, the skip connection paper, arguably still the most reused idea in all of deep learning
+- [An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale](https://arxiv.org/abs/2010.11929) - ViT, transformers finally come for CV
+
+## Detection and Segmentation
+
+- [Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks](https://arxiv.org/abs/1506.01497) - the object detection classic
+- [You Only Look Once: Unified, Real-Time Object Detection](https://arxiv.org/abs/1506.02640) - YOLO. Detection as one regression pass instead of region proposals; the other branch from Faster R-CNN, and the one that won on speed
+- [Focal Loss for Dense Object Detection](https://arxiv.org/abs/1708.02002) - RetinaNet. The insight is the loss, not the architecture; down-weight the easy background boxes and one-stage detection catches up with two-stage
+- [U-Net: Convolutional Networks for Biomedical Image Segmentation](https://arxiv.org/abs/1505.04597) - written for biomedical segmentation, then spent years as the backbone of every diffusion model. Skip connections again
+- [Mask R-CNN](https://arxiv.org/abs/1703.06870) - Faster R-CNN plus a mask head. The paper that made instance segmentation routine
+- [Segment Anything](https://arxiv.org/abs/2304.02643) - SAM. Promptable segmentation trained on a billion masks, and segmentation's foundation model moment
+
+## Representation Learning
+
+Learning an embedding space where distance means something, rather than learning a classifier.
+
+- [A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/abs/2002.05709) - SimCLR. Augment an image two ways, pull the pair together, push everything else apart. The augmentations turned out to matter more than the architecture did
+- [Emerging Properties in Self-Supervised Vision Transformers](https://arxiv.org/abs/2104.14294) - the original DINO. Self-distillation with no labels, and the result nobody was expecting; the attention maps segment objects on their own. See [Choosing a Visual Encoder](#choosing-a-visual-encoder) for where this ended up
+- [ArcFace: Additive Angular Margin Loss for Deep Face Recognition](https://arxiv.org/abs/1801.07698) - supervised, but the point is the geometry of the embedding rather than the classification. Still the default starting point for a lot of retrieval work, not only faces
