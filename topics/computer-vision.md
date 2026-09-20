@@ -96,7 +96,6 @@ A tight, unusually readable research thread from 2022-2023, all answering one qu
 - [Key-Locked Rank One Editing for Text-to-Image Personalization](https://research.nvidia.com/labs/par/Perfusion/) - Perfusion. 100KB personalization at rank one, and the project page is frankly better than the paper
 - [HyperDreamBooth](https://hyperdreambooth.github.io/) - a hypernetwork that predicts the weight update instead of optimizing for it. Personalization drops from minutes to seconds
 - [Domain-Agnostic Tuning-Encoder for Fast Personalization of Text-To-Image Models](https://arxiv.org/abs/2307.06925) - the encoder based approach, generalized past the single-domain assumption
-- [e4t-diffusion](https://github.com/mkshing/e4t-diffusion) - implementation of the encoder based tuning work, for when the papers stop being enough
 
 ---
 

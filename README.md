@@ -163,7 +163,6 @@ The part everyone skips, and then wonders why nothing improves. If you're buildi
 - [awesome-mcp-servers](https://github.com/wong2/awesome-mcp-servers) - curated list of MCP servers, the equivalent list for the MCP side
 - [GitHub's MCP server](https://github.com/github/github-mcp-server)
 - [Model Context Protocol Python SDK](https://github.com/modelcontextprotocol/python-sdk)
-- [Linear's MCP Integration Announcement](https://linear.app/changelog/2025-05-01-mcp)
 
 ### Claude Code
 
@@ -206,10 +205,9 @@ Small topic, but it's the first thing that looks arbitrary when you read a trans
 
 ## Before Decoders: The Encoder Era
 
-BERT and friends aren't what anyone means by "LLM" today, but a lot of practical text-to-vector work still lives here. The architecture arguments are also much easier to follow at this scale.
+BERT and friends aren't what anyone means by "LLM" today, but a lot of practical text-to-vector work still lives here.
 
 - [How to get meaning from text with language model BERT](https://www.youtube.com/watch?v=-9vVhYEXeyQ) - solid explanation of turning text into representations, from back when generation wasn't the point
-- [Leaving BERT Behind With DeBERTa](https://wandb.ai/akshayuppal12/DeBERTa/reports/The-Next-Generation-of-Transformers-Leaving-BERT-Behind-With-DeBERTa--VmlldzoyNDM2NTk2) - disentangled attention, explained readably. Also a good look at what incremental architecture work actually looked like
 
 ## Scaling Laws
 
