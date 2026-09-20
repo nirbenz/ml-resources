@@ -251,7 +251,7 @@ If you want to dedicate yourself to a full course rather than picking at links -
 
 - [Stanford's current main NLP course](https://stanford-cs336.github.io/spring2025/)
 - [Great list by Yoav Goldberg](https://gist.github.com/yoavg/95bbc5768cacd2bf07187779fada4867)
-- [ETH Zurich's Robot Learning: From Fundamentals to Foundation Models](https://cvg.ethz.ch/lectures/Robot-Learning/) - Oier Mees' Spring 2026 course, and the guest list is ridiculous; Cheng Chi on generative models, Ted Xiao on sequence modeling and transformers, Aviral Kumar on RL, Scott Reed on world models, Quan Vuong on generalist policies, Archit Sharma on embodied reasoning and test-time scaling, Lucas Beyer on what's still open. Slides, recordings and homework code are all public in [the course repo](https://github.com/mees-robot-learning-course/ethz-course-2026). It's a robotics course, but most of the machinery is the same machinery, just pointed somewhere else - the Beyer vision talk in the [computer vision](topics/computer-vision.md) file came out of this course
+- [ETH Zurich's Robot Learning: From Fundamentals to Foundation Models](https://cvg.ethz.ch/lectures/Robot-Learning/) - Oier Mees' Spring 2026 course, and the guest list is ridiculous; Cheng Chi on generative models, Ted Xiao on sequence modeling and transformers, Aviral Kumar on RL, Scott Reed on world models, Quan Vuong on generalist policies, Archit Sharma on embodied reasoning and test-time scaling, Lucas Beyer on what's still open. Slides, recordings and homework code are all public in [the course repo](https://github.com/mees-robot-learning-course/ethz-course-2026). It's a robotics course, but a lot of it is the same machinery pointed at robots - the Beyer vision talk in the [computer vision](topics/computer-vision.md) file came out of this course
 
 ## Training Large Models: War Stories
 
@@ -263,7 +263,7 @@ Some of these are lists of lists - use them to go deeper than what's in this doc
 
 - [a16z's AI Canon](https://a16z.com/ai-canon/) - a broad, tiered reading list from beginner explainers to deeply technical papers, covering LLMs, diffusion models and the AI market
 - [Sebastian Raschka's "Understanding Large Language Models" reading list](https://sebastianraschka.com/blog/2023/llm-reading-list.html) - academic papers only, meant to be read chronologically
-- [CMU 10-799's resources page](https://kellyyutonghe.github.io/10799S26/resources/) - the reading list for a Spring 2026 course dedicated entirely to diffusion and flow matching. Books, other courses, and papers grouped by topic, and it's maintained through the semester. This is where to go when the generative thread in the [computer vision](topics/computer-vision.md) file stops being deep enough
+- [CMU 10-799's resources page](https://kellyyutonghe.github.io/10799S26/resources/) - the reading list for a Spring 2026 course dedicated entirely to diffusion and flow matching. Books, other courses, and papers grouped by topic, and it's maintained through the semester. Go here when the generative thread in the [computer vision](topics/computer-vision.md) file isn't deep enough for you
 - Ilya Sutskever reportedly gave John Carmack this list of papers, saying "if you learn all of these, you'll know 90% of what matters today": [curated version with links to every paper](https://github.com/dzyim/ilya-sutskever-recommended-reading)
 
 ---
