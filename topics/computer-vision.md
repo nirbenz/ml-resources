@@ -20,6 +20,10 @@ The **recognition** one is AlexNet through ViT and CLIP, then VLMs, then video. 
   - [Text-to-Image Personalization](#text-to-image-personalization)
 - [The Recognition Thread](#the-recognition-thread)
   - [Pre-Diffusion Classics](#pre-diffusion-classics)
+    - [Backbones](#backbones)
+    - [Detection and Segmentation](#detection-and-segmentation)
+    - [Representation Learning](#representation-learning)
+    - [Vision and Language](#vision-and-language)
   - [Choosing a Visual Encoder](#choosing-a-visual-encoder)
   - [Vision-Language Models (VLMs)](#vision-language-models-vlms)
   - [Video Understanding Models](#video-understanding-models)
@@ -103,10 +107,33 @@ A tight, unusually readable research thread from 2022-2023, all answering one qu
 
 ## Pre-Diffusion Classics
 
+Grouped by what each line of work was actually trying to do, rather than strictly by date. Chronological within each group.
+
+### Backbones
+
 - [ImageNet Classification with Deep Convolutional Neural Networks](https://www.cs.toronto.edu/~kriz/imagenet_classification_with_deep_convolutional.pdf) - AlexNet, the 2012 paper that kicked off the deep learning era in computer vision, also on Ilya's reading list
+- [Very Deep Convolutional Networks for Large-Scale Image Recognition](https://arxiv.org/abs/1409.1556) - VGG. Mostly remembered for showing depth with tiny 3x3 filters was the whole trick, and then for being the feature extractor everyone used for years afterwards - perceptual loss, style transfer, all of it
 - [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385) - ResNet, the skip connection paper, arguably still the most reused idea in all of deep learning
-- [Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks](https://arxiv.org/abs/1506.01497) - the object detection classic
 - [An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale](https://arxiv.org/abs/2010.11929) - ViT, transformers finally come for CV
+
+### Detection and Segmentation
+
+- [Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks](https://arxiv.org/abs/1506.01497) - the object detection classic
+- [You Only Look Once: Unified, Real-Time Object Detection](https://arxiv.org/abs/1506.02640) - YOLO. Detection as one regression pass instead of region proposals; the other branch from Faster R-CNN, and the one that won on speed
+- [U-Net: Convolutional Networks for Biomedical Image Segmentation](https://arxiv.org/abs/1505.04597) - written for biomedical segmentation, then spent years as the backbone of every diffusion model. Skip connections again
+- [Mask R-CNN](https://arxiv.org/abs/1703.06870) - Faster R-CNN plus a mask head. The paper that made instance segmentation routine
+- [Segment Anything](https://arxiv.org/abs/2304.02643) - SAM. Promptable segmentation trained on a billion masks, and segmentation's foundation model moment
+
+### Representation Learning
+
+Learning an embedding space where distance means something, rather than learning a classifier.
+
+- [A Simple Framework for Contrastive Learning of Visual Representations](https://arxiv.org/abs/2002.05709) - SimCLR. Augment an image two ways, pull the pair together, push everything else apart. The augmentations turned out to matter more than the architecture did
+- [Emerging Properties in Self-Supervised Vision Transformers](https://arxiv.org/abs/2104.14294) - the original DINO. Self-distillation with no labels, and the result nobody was expecting; the attention maps segment objects on their own. See [Choosing a Visual Encoder](#choosing-a-visual-encoder) for where this ended up
+- [ArcFace: Additive Angular Margin Loss for Deep Face Recognition](https://arxiv.org/abs/1801.07698) - supervised, but the point is the geometry of the embedding rather than the classification. Still the default starting point for a lot of retrieval work, not only faces
+
+### Vision and Language
+
 - [Learning Transferable Visual Models From Natural Language Supervision](https://arxiv.org/abs/2103.00020) - CLIP, contrastive image/text pretraining
 - [Sigmoid Loss for Language Image Pre-Training](https://arxiv.org/abs/2303.15343) - SigLIP, CLIP's successor, swaps the softmax contrastive loss for a sigmoid one
 
