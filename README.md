@@ -193,7 +193,8 @@ intuitive resources. As always with *Andrej Karpathy* - he is the master of expl
 - [GPT in 60 Lines of NumPy](https://jaykmody.com/blog/gpt-from-scratch/)
 - [Becoming the Unbeatable: How I Fine-Tuned GPT's KV Cache](https://dipkumar.dev/becoming-the-unbeatable/posts/gpt-kvcache/)
 - [Understanding Multi-Head Latent Attention (MLA)](https://shreyansh26.github.io/post/2025-11-08_multihead-latent-attention/) - picks up where the KV cache post leaves off; goes MHA - GQA - MQA - MLA, with an actual KV cache size comparison at the end. The DeepSeek variant, and the clearest explanation of why nobody runs plain MHA anymore
-- [RoFormer: Enhanced Transformer with Rotary Position Embedding](https://arxiv.org/abs/2104.09864) - RoPE, which is what basically everything uses now. Read this before [Context](#context) above, since that's the thing being extended
+- [RoPE: A Detailed Guide to Rotary Position Embedding in Modern LLMs](https://medium.com/@mlshark/rope-a-detailed-guide-to-rotary-position-embedding-in-modern-llms-fde71785f152) - the worked-through version, for when the paper's formulation doesn't click
+- [RoFormer: Enhanced Transformer with Rotary Position Embedding](https://arxiv.org/abs/2104.09864) - RoPE itself, and what basically everything uses now. Worth reading before [Context](#context) above, since that's the thing being extended
 - [FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness](https://arxiv.org/abs/2205.14135) - attention was never compute bound, it was memory bound. Same maths, much better use of the hardware
 
 ## Normalization
