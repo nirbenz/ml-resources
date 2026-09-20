@@ -28,6 +28,7 @@ Everything historical sits in [History, For the Curious](#history-for-the-curiou
   - [Video Understanding Models](#video-understanding-models)
 - [3D and Novel View Synthesis](#3d-and-novel-view-synthesis)
 - [History, For the Curious](#history-for-the-curious)
+  - [Generative Models](#generative-models)
   - [Backbones](#backbones)
   - [Detection and Segmentation](#detection-and-segmentation)
   - [Representation Learning](#representation-learning)
@@ -87,13 +88,16 @@ Nobody trains GANs anymore. Read this anyway - adversarial training is where the
 
 ## Rectified Flow and Flow Matching
 
-Diffusion isn't how the strongest image models get trained anymore. Flow matching reframes generation as learning a velocity field that moves noise to data, and rectified flow is the variant that straightens those paths out so you can sample in way fewer steps. SD3 and FLUX are both built on it.
+Diffusion isn't how the strongest image models get trained anymore. Flow matching reframes generation as learning a velocity field that moves noise to data. You can't regress onto that field directly - the marginal velocity is intractable - but you can regress onto the conditional one defined by a single noise-data pair, and in expectation you get the marginal for free. That trick is the whole unlock, and it's what continuous flows were missing since 2018.
+
+Rectified flow is not a follow-up to flow matching, despite how everyone talks about it; it landed a month earlier, with stochastic interpolants in between. Three groups, autumn 2022, same core idea arrived at independently. What's actually specific to rectified flow is reflow - retrain on your own generated pairs to straighten the trajectories - and that's the part that buys few-step sampling. SD3 and FLUX take the straight-line path and not the reflow, so the name is a bit of a branding accident; the few-step FLUX variants get there by distillation instead.
 
 The important thing to get early; this is a change of coordinates, not a rival framework. Read the first two and you stop reading the diffusion and flow literature as if they were two separate fields.
 
 - [Diffusion Meets Flow Matching: Two Sides of the Same Coin](https://diffusionflow.github.io/) - start here. Walks through the equivalence explicitly, which saves a lot of confusion later
 - [Visualizing Rectified Flows](https://alechelbling.com/blog/rectified-flow/) - interactive, and it runs a real flow model in your browser. Why flow models learn curved trajectories, why that costs you sampling steps, and what reflow does about it. Much easier to get the geometric intuition here than from the papers. Code in [Diffusion-Explorer](https://github.com/helblazer811/Diffusion-Explorer)
 - [Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow](https://arxiv.org/abs/2209.03003) - rectified flow itself, plus the reflow procedure
+- [Building Normalizing Flows with Stochastic Interpolants](https://arxiv.org/abs/2209.15571) - Albergo and Vanden-Eijnden, the third of the three. Most general framing of the interpolant, and the one to read if you want to see how much freedom you actually have in choosing the path
 - [Flow Matching for Generative Modeling](https://arxiv.org/abs/2210.02747) - Lipman et al.'s parallel formulation, arrived at independently. This is the more common vocabulary now
 - [Scaling Rectified Flow Transformers for High-Resolution Image Synthesis](https://arxiv.org/abs/2403.03206) - SD3. The paper that took this mainstream for text-to-image, and the best account of what actually matters at scale
 - [FLUX.1](https://github.com/black-forest-labs/flux) - Black Forest Labs' inference repo, and the strongest open weights model in this lineage. The [launch post](https://bfl.ai/announcements/24-08-01-bfl) stands in for a paper on the original release
@@ -187,6 +191,20 @@ Small thread, and mostly disconnected from the other two; the goal is reconstruc
 How the field got here. None of this is required to use anything above, but the lineage explains a lot of the design decisions that otherwise look arbitrary.
 
 Grouped by what each line of work was actually trying to do, rather than strictly by date. Chronological within each group.
+
+## Generative Models
+
+The prehistory of the generative thread above. Two separate lineages running in parallel for years, which turned out to be the same lineage.
+
+- [Lilian Weng's "Flow-based Deep Generative Models"](https://lilianweng.github.io/posts/2018-10-13-flow-models/) - normalizing flows, which are not flow matching despite the name. Learn an invertible map with a tractable Jacobian determinant and you get exact likelihood. Covers NICE, RealNVP, Glow, MADE, MAF and IAF in one go
+- [Density estimation using Real NVP](https://arxiv.org/abs/1605.08803) - the coupling layer that made normalizing flows practical. Dinh, Sohl-Dickstein and Bengio; note the middle author, who wrote the diffusion paper below the year before
+- [Glow: Generative Flow with Invertible 1x1 Convolutions](https://arxiv.org/abs/1807.03039) - the high-water mark for discrete normalizing flows, and the point where the invertibility constraint clearly stopped being worth paying for
+- [Neural Ordinary Differential Equations](https://arxiv.org/abs/1806.07366) - define the transport as an ODE instead of a stack of layers. The idea flow matching is eventually built on
+- [FFJORD: Free-form Continuous Dynamics for Scalable Reversible Generative Models](https://arxiv.org/abs/1810.01367) - continuous normalizing flows, the direct ancestor. Right idea, close to untrainable, because you had to simulate the ODE inside the training loop. That blocker stands until 2022
+- [Deep Unsupervised Learning using Nonequilibrium Thermodynamics](https://arxiv.org/abs/1503.03585) - Sohl-Dickstein et al., the original diffusion paper. Everything is here in 2015 and it just doesn't work well enough yet
+- [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239) - DDPM, five years later, where it starts working. Simplify the objective to plain noise prediction and the whole field turns
+
+Where it goes from there is live rather than historical; latent diffusion, rectified flow and flow matching are all up in [The Generative Thread](#the-generative-thread).
 
 ## Backbones
 
