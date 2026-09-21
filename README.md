@@ -186,6 +186,7 @@ intuitive resources. As always with *Andrej Karpathy* - he is the master of expl
 
 - [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) - the classic visual walkthrough, still the best starting point
 - [The Illustrated GPT-2](https://jalammar.github.io/illustrated-gpt2/) - same treatment, applied to decoder-only models
+- [Attention Is All You Need](https://arxiv.org/abs/1706.03762) - Vaswani et al. Read one of the two posts above first and then read this, because everything further down the section - RoPE, FlashAttention, MLA, KV cache - is a modification to the architecture defined here
 - [Lucas Beyer's Transformers talk](https://lb.eyer.be/transformer) - the deck one of the ViT and SigLIP authors uses to teach this. Attention from scratch, the full architecture, KV cache sizing, compute budget heuristics, MoE, then the ViT takeover and everything-is-tokens. Denser than the Illustrated posts and worth the density
 - [The Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/)
 - [Getting Meaning From Text: Self-Attention Step-by-Step](https://pub.towardsai.net/getting-meaning-from-text-self-attention-step-by-step-video-7d8f49694f89)
@@ -208,6 +209,7 @@ Small topic, but it's the first thing that looks arbitrary when you read a trans
 
 BERT and friends aren't what anyone means by "LLM" today, but a lot of practical text-to-vector work still lives here.
 
+- [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/abs/1810.04805) - Devlin et al. Masked language modelling and bidirectional context, which is still what you want when the job is embedding text rather than continuing it
 - [How to get meaning from text with language model BERT](https://www.youtube.com/watch?v=-9vVhYEXeyQ) - solid explanation of turning text into representations, from back when generation wasn't the point
 
 ## Scaling Laws
