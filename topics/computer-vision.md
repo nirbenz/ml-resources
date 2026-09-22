@@ -22,6 +22,7 @@ Everything historical sits in [History, For the Curious](#history-for-the-curiou
   - [Diffusion Models](#diffusion-models)
     - [Additional Good Resources](#additional-good-resources)
   - [Rectified Flow and Flow Matching](#rectified-flow-and-flow-matching)
+  - [Video Generation](#video-generation)
   - [Text-to-Image Personalization](#text-to-image-personalization)
 - [The Recognition Thread](#the-recognition-thread)
   - [Choosing a Visual Encoder](#choosing-a-visual-encoder)
@@ -49,7 +50,7 @@ Two CVPR 2026 ones have slides but no recordings yet; [The Principles of Diffusi
 The autoencoder part is obvious. The *variational* part is where people lose it - and it's worth not losing, because the ELBO shows up again in diffusion, and the encoder/decoder pair shows up again as the thing Stable Diffusion actually runs inside.
 
 - [From Autoencoder to Beta-VAE](https://lilianweng.github.io/posts/2018-08-12-vae/) - start here. Goes autoencoder - denoising - sparse - VAE - beta-VAE - VQ-VAE, and that last step leads straight into VQGAN below
-- [Neural Discrete Representation Learning](https://arxiv.org/abs/1711.00937) - VQ-VAE. Discretise the latent space and the decoder stops blurring everything. Every image and video tokenizer in use today is a descendant
+- [Neural Discrete Representation Learning](https://arxiv.org/abs/1711.00937) - VQ-VAE. Discretise the latents and the decoder stops blurring everything; every image and video tokenizer in use today descends from this
 - [Auto-Encoding Variational Bayes](https://arxiv.org/abs/1312.6114) - Kingma and Welling, the original
 - [An Introduction to Variational Autoencoders](https://arxiv.org/abs/1906.02691) - the same authors explaining their own work at monograph length six years later. A much gentler step than the paper
 - [Variational Auto-Encoders and the Expectation-Maximization Algorithm](https://maurocamaraescudero.netlify.app/post/variational-auto-encoders-and-the-expectation-maximization-algorithm/) - the connection to EM, which most tutorials skip entirely
@@ -81,9 +82,10 @@ Nobody trains GANs anymore. Read this anyway - adversarial training is where the
 Three of these do genuinely different jobs and you want all three; the monograph for the mathematics, Weng for the map, Dieleman for making the formalisms stop fighting each other. Everything else that used to live up here is still good and now sits under [Additional Good Resources](#additional-good-resources) below.
 
 - [Lilian Weng's "What are Diffusion Models?"](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/) - the fastest orientation there is, 30 minutes, and the only thing here that maps the model zoo and the architecture lineage; LDM, unCLIP, Imagen, GLIDE, U-Net through to DiT. Be clear about what it is though - it's a survey, not a derivation. No score matching, no SDEs, DDIM stated rather than derived. Last substantive update April 2024
-- [Score-Based Generative Modeling through Stochastic Differential Equations](https://arxiv.org/abs/2011.13456) - Song et al. The paper that showed the discrete-time and score-based views are one continuous-time SDE, and introduced the probability flow ODE that every fast sampler since has been solving. If you only read one diffusion paper, read this one rather than DDPM
-- [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502) - DDIM. Same trained model, deterministic non-Markovian sampling, an order of magnitude fewer steps. This is why nobody waits a thousand steps for an image
-- [Classifier-Free Diffusion Guidance](https://arxiv.org/abs/2207.12598) - Ho and Salimans. Train conditional and unconditional in one model, then extrapolate between them at sampling time. Short paper, and it's `guidance_scale` - the one knob everybody turns without reading where it came from
+- [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239) - DDPM, the paper everything above is explaining; strip the objective back to plain noise prediction and it finally works. The next two are both answers to it
+- [Score-Based Generative Modeling through Stochastic Differential Equations](https://arxiv.org/abs/2011.13456) - the discrete and score-based views turn out to be one SDE. Also where the probability flow ODE comes from, which is what every fast sampler since has been solving
+- [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502) - DDIM. Same trained model, deterministic sampling, ten times fewer steps. Why nobody waits a thousand steps for an image
+- [Classifier-Free Diffusion Guidance](https://arxiv.org/abs/2207.12598) - train conditional and unconditional in one model, extrapolate between them at sampling time. Short paper, and it's `guidance_scale` - the knob everyone turns without knowing where it came from
 - [High-Resolution Image Synthesis with Latent Diffusion Models](https://arxiv.org/abs/2112.10752) - LDM, the Stable Diffusion paper. Run diffusion in a VAE's latent space instead of pixel space and the compute drops by orders of magnitude. This is the single architectural decision that put image generation on consumer GPUs
 - [Scalable Diffusion Models with Transformers](https://arxiv.org/abs/2212.09748) - DiT. Throw out the U-Net, use a transformer on latent patches, and the usual scaling behaviour shows up. This is the backbone under Sora, SD3 and FLUX, so it's the one architecture paper you can't skip. Reference implementation is [facebookresearch/DiT](https://github.com/facebookresearch/DiT) and it's about 250 readable lines
 - [Diffusion Transformer Explained](https://towardsdatascience.com/diffusion-transformer-explained-e603c4770f7e/) - the readable version of the above. Walks the whole conditioning design space - in-context, cross-attention, adaLN, adaLN-Zero - and explains why the block is zero-initialised so it starts out as the identity, which is the bit everyone glosses over. There is no Annotated Transformer equivalent for DiT; this is the closest thing going
@@ -120,6 +122,13 @@ The important thing to get early; this is a change of coordinates, not a rival f
 - [FLUX.1 Kontext: Flow Matching for In-Context Image Generation and Editing in Latent Space](https://arxiv.org/abs/2506.15742) - the FLUX work that does have a paper, and the in-context editing story
 - [A Lagrangian View of Flow Matching](https://arxiv.org/abs/2609.00198) - Milanfar deriving flow matching bottom-up from the particles rather than top-down from optimal transport. Falls out of it; the denoiser's Jacobian is what curves the trajectories, which is a proper mathematical answer to why straight paths let you take huge steps and why real models need distilling anyway
 - [Flow Matching Guide and Code](https://arxiv.org/abs/2412.06264) - the source of truth for flow matching. Meta's monograph, 83 pages, and the only treatment here that gets the attribution right on page one by crediting Lipman, Albergo and Liu together. Ships a [maintained PyTorch package](https://github.com/facebookresearch/flow_matching). Worth knowing it never covers reflow, so pair it with the Helbling piece above
+
+## Video Generation
+
+Text-to-image stretched along the time axis; 3D VAE, diffusion transformer, flow matching. Both of these are engineering reports rather than papers, which is the point - the data and infra sections are what you can't get anywhere else. Also the one area where open weights actually caught the closed models.
+
+- [HunyuanVideo](https://arxiv.org/abs/2412.03603) - Tencent, 13B, the first open one that genuinely matched the closed models. Unusually honest about data curation
+- [Wan](https://arxiv.org/abs/2503.20314) - Alibaba, DiT plus their own 3D VAE. Shows the scaling laws hold for video too
 
 ## Text-to-Image Personalization
 
@@ -218,10 +227,9 @@ The prehistory of the generative thread above. Two separate lineages running in 
 - [Glow: Generative Flow with Invertible 1x1 Convolutions](https://arxiv.org/abs/1807.03039) - the high-water mark for discrete normalizing flows, and the point where the invertibility constraint clearly stopped being worth paying for
 - [Neural Ordinary Differential Equations](https://arxiv.org/abs/1806.07366) - define the transport as an ODE instead of a stack of layers. The idea flow matching is eventually built on
 - [FFJORD: Free-form Continuous Dynamics for Scalable Reversible Generative Models](https://arxiv.org/abs/1810.01367) - continuous normalizing flows, the direct ancestor. Right idea, close to untrainable, because you had to simulate the ODE inside the training loop. That blocker stands until 2022
-- [Deep Unsupervised Learning using Nonequilibrium Thermodynamics](https://arxiv.org/abs/1503.03585) - Sohl-Dickstein et al., the original diffusion paper. Everything is here in 2015 and it just doesn't work well enough yet
-- [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239) - DDPM, five years later, where it starts working. Simplify the objective to plain noise prediction and the whole field turns
+- [Deep Unsupervised Learning using Nonequilibrium Thermodynamics](https://arxiv.org/abs/1503.03585) - Sohl-Dickstein et al., the original diffusion paper. Everything is already here in 2015 and it just doesn't work well enough yet; it takes another five years and DDPM before it does
 
-Where it goes from there is live rather than historical; latent diffusion, rectified flow and flow matching are all up in [The Generative Thread](#the-generative-thread).
+Where it goes from there is live rather than historical; DDPM, latent diffusion, rectified flow and flow matching are all up in [The Generative Thread](#the-generative-thread).
 
 ## Backbones
 
